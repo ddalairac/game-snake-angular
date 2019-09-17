@@ -1,1 +1,49 @@
 /* You can add global styles to this file, and also import other style files */
+html,
+body {
+  height: 100%;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  border: none;
+}
+.input-keypress {
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  z-index: 1000;
+  position: absolute;
+  top: 0;
+  left: 0;
+  cursor: default;
+}
+
+.stage {
+  position: relative;
+  margin: 0 auto;
+}
+.row {
+  display: block;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  border: none;
+  height: 30px;
+}
+.col {
+  display: inline-block;
+  margin: 0;
+  padding: 0;
+  border: none;
+}
+.slot,
+.body-link {
+  width: 28px;
+  height: 28px;
+  border: 1px solid black;
+  margin: 0;
+}
+.body-link {
+  background: green;
+  position: absolute;
+}
