@@ -11,4 +11,5 @@ export class BodyLinkComponent implements OnInit {
   ngOnInit() {}
   @Input() y: number;
   @Input() x: number;
+  @Input() link: number;
 }

@@ -10,6 +10,7 @@
   <app-body-link
     [y]="y"
     [x]="x"
-    *ngFor="let link of snakeLinks"
+    [link]="link"
+    *ngFor="let link of snakeLinks; let index = index"
   ></app-body-link>
 </div>
