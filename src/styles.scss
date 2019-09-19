@@ -37,7 +37,8 @@ body {
   border: none;
 }
 .slot,
-.body-link {
+.body-link,
+.apple {
   width: 28px;
   height: 28px;
   border: 1px solid black;
@@ -45,5 +46,9 @@ body {
 }
 .body-link {
   background: green;
+  position: absolute;
+}
+.apple {
+  background: red;
   position: absolute;
 }

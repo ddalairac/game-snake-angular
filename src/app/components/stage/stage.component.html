@@ -7,10 +7,7 @@
     ></app-stage-slot>
   </div>
 
-  <app-body-link
-    [y]="y"
-    [x]="x"
-    [link]="link"
-    *ngFor="let link of snakeLinks; let index = index"
-  ></app-body-link>
+  <app-body-link [link]="link" *ngFor="let link of snakeLinks"></app-body-link>
+
+  <app-apple [apple]="apple" *ngFor="let apple of apples"></app-apple>
 </div>

@@ -1,4 +1,5 @@
 import { Component, OnInit, Input } from "@angular/core";
+import { SnakeModel } from "src/app/model/skake.class";
 
 @Component({
   selector: "app-body-link",
@@ -9,7 +10,5 @@ export class BodyLinkComponent implements OnInit {
   constructor() {}
 
   ngOnInit() {}
-  @Input() y: number;
-  @Input() x: number;
-  @Input() link: number;
+  @Input() link: SnakeModel;
 }
