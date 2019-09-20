@@ -12,7 +12,10 @@ export class StageComponent implements OnInit {
   constructor() {}
 
   ngOnInit() {
-    this.stageSlots = [[1, 1, 1, 1, 1, 1, 1, 1], [1, 1, 1, 1, 1, 1, 1, 1]];
+    this.stageSlots = [
+      [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+      [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
+    ];
     this.modulo = 30;
     this.stageHeight = this.stageSlots[0].length * this.modulo;
     this.stageWidth = this.stageSlots[1].length * this.modulo;
@@ -35,17 +38,18 @@ export class StageComponent implements OnInit {
   appleApearIteration: number;
 
   snakeMovQueue: Array<string | MoveOpt> = [];
-  // snakeSize:number;
+  interval;
 
-  i: number = 0; // TODO, eliminar cuando crezca dinamicamente
+  i: number = 0;
   loop() {
     let nextApplepush = this.appleApearIteration;
-    setInterval(() => {
+    this.interval = setInterval(() => {
       this.checkColition();
+      this.selfEat();
       this.updateSnakeMovQueue();
       this.snakeMove();
       this.i++;
-    }, 200);
+    }, 100);
   }
   onKeydown(KeyboardEvent: KeyboardEvent): void {
     if (
@@ -55,16 +59,12 @@ export class StageComponent implements OnInit {
       KeyboardEvent.key == MoveOpt.ArrowRight
     ) {
       this.snakeHeadMov = KeyboardEvent.key;
-      // this.snakeMovQueue.unshift(KeyboardEvent.key);
-      // this.snakeMovQueue.pop();
     }
-    console.log("onKeydown", this.snakeHeadMov);
-    // console.log("snakeMovQueue", this.snakeMovQueue);
   }
   updateSnakeMovQueue() {
     this.snakeMovQueue.unshift(this.snakeHeadMov);
     this.snakeMovQueue.pop();
-    console.log("snakeMovQueue", this.snakeMovQueue);
+    // console.log(this.snakeMovQueue);
   }
   snakeMove() {
     for (let i = 0; i < this.snakeLinks.length; i++) {
@@ -101,8 +101,6 @@ export class StageComponent implements OnInit {
     } else if (link.x < 0) {
       link.x = (this.stageSlots[1].length - 1) * this.modulo;
     }
-    // console.log("x:", link.x, " y:", link.y);
-    // console.log("lastX:", link.lastX, " lastY:", link.lastY);
   }
 
   findEmptySlot(): [number, number] {
@@ -127,25 +125,19 @@ export class StageComponent implements OnInit {
       }
     }
     return [x, y];
-    // return [30, 30];
   }
   applePush() {
     let applePosition: number[] = [];
-    // if (this.i == nextApplepush && this.apples.length < 2) {
-    // nextApplepush += this.appleApearIteration;
     applePosition = this.findEmptySlot();
     this.apples.push(
       new ElementModel(applePosition[0], applePosition[1], "red")
     );
-    // }
-    // return nextApplepush;
   }
   checkColition() {
     let colition = false;
     let newLink = {
       x: this.snakeLinks[this.snakeLinks.length - 1].lastX,
       y: this.snakeLinks[this.snakeLinks.length - 1].lastY
-      // moveNext: this.snakeLinks[this.snakeLinks.length - 1].moveNext
     };
     for (let i = 0; i < this.apples.length; i++) {
       if (
@@ -163,5 +155,24 @@ export class StageComponent implements OnInit {
       }
     }
     return colition;
+  }
+  selfEat(): boolean {
+    let dead = false;
+    for (let i = 0; i < this.snakeLinks.length; i++) {
+      for (let j = i + 1; j < this.snakeLinks.length; j++) {
+        if (
+          this.snakeLinks[i].x == this.snakeLinks[j].x &&
+          this.snakeLinks[i].y == this.snakeLinks[j].y
+        ) {
+          dead = true;
+          break;
+        }
+      }
+    }
+    if (dead) {
+      clearInterval(this.interval);
+      alert("GAME OVER!");
+    }
+    return dead;
   }
 }
