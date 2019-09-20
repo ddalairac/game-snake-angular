@@ -1,4 +1,8 @@
 <div
   class="apple"
-  [ngStyle]="{ top: apple.y + 'px', left: apple.x + 'px' }"
+  [ngStyle]="{
+    top: apple.y + 'px',
+    left: apple.x + 'px',
+    background: apple.color
+  }"
 ></div>

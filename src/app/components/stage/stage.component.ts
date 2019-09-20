@@ -1,6 +1,6 @@
 import { Component, OnInit } from "@angular/core";
 import { Observable } from "rxjs";
-import { SnakeModel, ElementModel } from "src/app/model/skake.class";
+import { SnakeModel, AppleModel } from "src/app/model/skake.class";
 import { MoveOpt } from "src/app/model/move-options.enum";
 
 @Component({
@@ -34,7 +34,7 @@ export class StageComponent implements OnInit {
   stageWidth: number;
   snakeLinks: SnakeModel[];
   snakeHeadMov: string | MoveOpt;
-  apples: ElementModel[];
+  apples: AppleModel[];
   appleApearIteration: number;
 
   snakeMovQueue: Array<string | MoveOpt> = [];
@@ -58,7 +58,18 @@ export class StageComponent implements OnInit {
       KeyboardEvent.key == MoveOpt.ArrowLeft ||
       KeyboardEvent.key == MoveOpt.ArrowRight
     ) {
-      this.snakeHeadMov = KeyboardEvent.key;
+      if (
+        (this.snakeHeadMov == MoveOpt.ArrowRight &&
+          KeyboardEvent.key != MoveOpt.ArrowLeft) ||
+        (this.snakeHeadMov == MoveOpt.ArrowLeft &&
+          KeyboardEvent.key != MoveOpt.ArrowRight) ||
+        (this.snakeHeadMov == MoveOpt.ArrowDown &&
+          KeyboardEvent.key != MoveOpt.ArrowUp) ||
+        (this.snakeHeadMov == MoveOpt.ArrowUp &&
+          KeyboardEvent.key != MoveOpt.ArrowDown)
+      ) {
+        this.snakeHeadMov = KeyboardEvent.key;
+      }
     }
   }
   updateSnakeMovQueue() {
@@ -129,9 +140,7 @@ export class StageComponent implements OnInit {
   applePush() {
     let applePosition: number[] = [];
     applePosition = this.findEmptySlot();
-    this.apples.push(
-      new ElementModel(applePosition[0], applePosition[1], "red")
-    );
+    this.apples.push(new AppleModel(applePosition[0], applePosition[1], "red"));
   }
   checkColition() {
     let colition = false;
@@ -144,11 +153,12 @@ export class StageComponent implements OnInit {
         this.snakeLinks[0].x == this.apples[i].x &&
         this.snakeLinks[0].y == this.apples[i].y
       ) {
-        console.log("colition!");
+        // console.log("colition!");
         colition = true;
         let lastIndex = this.snakeMovQueue.length - 1;
         this.snakeMovQueue.push(this.snakeMovQueue[lastIndex]);
         this.snakeLinks.push(new SnakeModel(newLink.x, newLink.y));
+        this.apples[i].color = "yellow";
         this.apples.splice(i, 1);
         this.applePush();
         break;
@@ -170,7 +180,11 @@ export class StageComponent implements OnInit {
       }
     }
     if (dead) {
+      for (let link of this.snakeLinks) {
+        link.color = "yellow";
+      }
       clearInterval(this.interval);
+
       alert("GAME OVER!");
     }
     return dead;

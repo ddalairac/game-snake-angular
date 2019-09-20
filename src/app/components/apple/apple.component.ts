@@ -1,5 +1,5 @@
 import { Component, OnInit, Input } from "@angular/core";
-import { ElementModel } from "src/app/model/skake.class";
+import { AppleModel } from "src/app/model/skake.class";
 
 @Component({
   selector: "app-apple",
@@ -10,5 +10,5 @@ export class AppleComponent implements OnInit {
   constructor() {}
 
   ngOnInit() {}
-  @Input() apple: ElementModel;
+  @Input() apple: AppleModel;
 }

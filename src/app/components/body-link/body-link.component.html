@@ -1,4 +1,8 @@
 <div
   class="body-link"
-  [ngStyle]="{ top: link.y + 'px', left: link.x + 'px' }"
+  [ngStyle]="{
+    top: link.y + 'px',
+    left: link.x + 'px',
+    background: link.color
+  }"
 ></div>

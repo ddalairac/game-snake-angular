@@ -1,8 +1,25 @@
 import { MoveOpt } from "./move-options.enum";
 import { extend } from "webdriver-js-extender";
 
-export class ElementModel {
+export class AppleModel {
   constructor(x: number, y: number, color?: string) {
+    this.x = x;
+    this.y = y;
+
+    if (color) {
+      this.color = color;
+    } else {
+      this.color = "red";
+    }
+  }
+  color: string;
+  x: number;
+  y: number;
+}
+
+export class SnakeModel {
+  constructor(x: number, y: number, color?: string) {
+    console.log("new snake link", x, y);
     this.x = x;
     this.y = y;
 
@@ -12,48 +29,11 @@ export class ElementModel {
       this.color = "green";
     }
   }
-  color: string;
-  x: number;
-  y: number;
-}
-
-export class SnakeModel {
-  constructor(
-    x: number,
-    y: number,
-    // moveNext: MoveOpt | string,
-    color?: string
-  ) {
-    console.warn("new snake link", x, y);
-    // this.moveNext = moveNext;
-    this.x = x;
-    this.y = y;
-  }
-  private _moveNext: MoveOpt | string;
-  private _moveLast: MoveOpt | string;
   private _x: number;
   private _y: number;
   private _prevX: number;
   private _prevY: number;
-
-  // set moveNext(value: MoveOpt | string) {
-  //   if (
-  //     value != MoveOpt.ArrowDown &&
-  //     value != MoveOpt.ArrowUp &&
-  //     value != MoveOpt.ArrowLeft &&
-  //     value != MoveOpt.ArrowRight
-  //   ) {
-  //     console.log("Movimiento no valido", value);
-  //   }
-  //   this._moveLast = this._moveNext;
-  //   this._moveNext = value;
-  // }
-  // get moveNext(): MoveOpt | string {
-  //   return this._moveNext;
-  // }
-  // get moveLast(): MoveOpt | string {
-  //   return this._moveLast;
-  // }
+  color: string;
 
   set x(value: number) {
     this._prevX = this._x;
@@ -77,29 +57,3 @@ export class SnakeModel {
     return this._prevY;
   }
 }
-// export class SnakeModel extends ElementModel {
-//   constructor(
-//     x: number,
-//     y: number,
-//     moveNext?: MoveOpt | string,
-//     color?: string
-//   ) {
-//     super(x, y, color);
-//     this.moveNext = moveNext;
-//   }
-//   moveNext: MoveOpt | string;
-//   moveLast: MoveOpt | string;
-
-//   private _x: number;
-
-//   x() {
-//       get:
-//       {
-//           return this._name;
-//       }
-//       set:
-//       {
-//           this._name = ???;
-//       }
-//   }
-// }
