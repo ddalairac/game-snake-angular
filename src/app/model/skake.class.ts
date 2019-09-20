@@ -21,9 +21,10 @@ export class SnakeModel {
   constructor(
     x: number,
     y: number,
-    moveNext?: MoveOpt | string,
+    moveNext: MoveOpt | string,
     color?: string
   ) {
+    console.warn("new snake link", x, y, moveNext);
     this.moveNext = moveNext;
     this.x = x;
     this.y = y;
@@ -45,7 +46,7 @@ export class SnakeModel {
       console.log("Movimiento no valido", value);
     }
     this._moveLast = this._moveNext;
-    this._moveLast = value;
+    this._moveNext = value;
   }
   get moveNext(): MoveOpt | string {
     return this._moveNext;
@@ -53,22 +54,24 @@ export class SnakeModel {
   get moveLast(): MoveOpt | string {
     return this._moveLast;
   }
-  get lastX(): number {
-    return this._x;
-  }
-  get x(): number {
-    return this._x;
-  }
+
   set x(value: number) {
     this._prevX = this._x;
     this._x = value;
   }
-  get y(): number {
-    return this._y;
+  get x(): number {
+    return this._x;
   }
+  get lastX(): number {
+    return this._x;
+  }
+
   set y(value: number) {
     this._prevY = this._y;
     this._y = value;
+  }
+  get y(): number {
+    return this._y;
   }
   get lastY(): number {
     return this._y;

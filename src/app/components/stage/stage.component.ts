@@ -18,6 +18,7 @@ export class StageComponent implements OnInit {
     this.stageWidth = this.stageSlots[1].length * this.modulo;
     this.snakeLinks = [];
     this.snakeHeadMov = MoveOpt.ArrowRight;
+    this.snakeMovQueue.push(MoveOpt.ArrowRight);
     this.apples = [];
     this.appleApearIteration = 10;
     this.snakeLinks.push(new SnakeModel(0, 0, MoveOpt.ArrowRight));
@@ -33,12 +34,15 @@ export class StageComponent implements OnInit {
   apples: ElementModel[];
   appleApearIteration: number;
 
+  snakeMovQueue: Array<string | MoveOpt>;
+  // snakeSize:number;
+
   i: number = 0; // TODO, eliminar cuando crezca dinamicamente
   loop() {
     let nextApplepush = this.appleApearIteration;
     setInterval(() => {
       this.snakeMove();
-      //this.checkColition();
+      this.checkColition();
       this.i++;
     }, 200);
   }
@@ -69,6 +73,7 @@ export class StageComponent implements OnInit {
   }
   snakeLinkDirection(link: SnakeModel): void {
     // console.log("snakeLinkDirection", link);
+    // console.log("moveNext", link.moveNext);
     switch (link.moveNext) {
       case "ArrowDown":
         this.snakeLinkMove(this.modulo, 0, link);
@@ -85,7 +90,7 @@ export class StageComponent implements OnInit {
     }
   }
   snakeLinkMove(y: number, x: number, link: SnakeModel): void {
-    console.log("snakeLinkMove", x, y, link);
+    // console.log("snakeLinkMove", x, y, link);
     link.y += y;
     link.x += x;
     if (link.y > this.stageHeight - this.modulo) {
@@ -138,45 +143,23 @@ export class StageComponent implements OnInit {
   }
   checkColition() {
     let colition = false;
-    let newXY = {
+    let newLink = {
       x: this.snakeLinks[this.snakeLinks.length - 1].x,
-      y: this.snakeLinks[this.snakeLinks.length - 1].y
+      y: this.snakeLinks[this.snakeLinks.length - 1].x,
+      moveNext: this.snakeLinks[this.snakeLinks.length - 1].moveNext
     };
     for (let i = 0; i < this.apples.length; i++) {
       if (
         this.snakeLinks[0].x == this.apples[i].x &&
         this.snakeLinks[0].y == this.apples[i].y
       ) {
-        colition = true;
-        this.apples.splice(i, 1);
-
-        // switch (this.snakeLinks[this.snakeLinks.length - 1].moveLast) {
-        //   case "ArrowDown":
-        //     newXY.x += 0;
-        //     newXY.y += -this.modulo;
-        //     break;
-        //   case "ArrowUp":
-        //     newXY.x += 0;
-        //     newXY.y += this.modulo;
-        //     break;
-        //   case "ArrowRight":
-        //     newXY.x += this.modulo;
-        //     newXY.y += 0;
-        //     break;
-        //   case "ArrowLeft":
-        //     newXY.x += -this.modulo;
-        //     newXY.y += 0;
-        //     break;
-        // }
-        this.snakeLinks.push(
-          new SnakeModel(
-            newXY.x,
-            newXY.y,
-            this.snakeLinks[this.snakeLinks.length - 1].moveLast
-          )
-        );
-        this.applePush();
         console.log("colition!");
+        colition = true;
+        this.snakeLinks.push(
+          new SnakeModel(newLink.x, newLink.y, newLink.moveNext)
+        );
+        this.apples.splice(i, 1);
+        this.applePush();
         break;
       }
     }
