@@ -21,7 +21,7 @@ export class StageComponent implements OnInit {
     this.snakeMovQueue.push(MoveOpt.ArrowRight);
     this.apples = [];
     this.appleApearIteration = 10;
-    this.snakeLinks.push(new SnakeModel(0, 0, MoveOpt.ArrowRight));
+    this.snakeLinks.push(new SnakeModel(0, 0));
     this.loop();
     this.applePush();
   }
@@ -34,15 +34,16 @@ export class StageComponent implements OnInit {
   apples: ElementModel[];
   appleApearIteration: number;
 
-  snakeMovQueue: Array<string | MoveOpt>;
+  snakeMovQueue: Array<string | MoveOpt> = [];
   // snakeSize:number;
 
   i: number = 0; // TODO, eliminar cuando crezca dinamicamente
   loop() {
     let nextApplepush = this.appleApearIteration;
     setInterval(() => {
-      this.snakeMove();
       this.checkColition();
+      this.updateSnakeMovQueue();
+      this.snakeMove();
       this.i++;
     }, 200);
   }
@@ -54,27 +55,24 @@ export class StageComponent implements OnInit {
       KeyboardEvent.key == MoveOpt.ArrowRight
     ) {
       this.snakeHeadMov = KeyboardEvent.key;
+      // this.snakeMovQueue.unshift(KeyboardEvent.key);
+      // this.snakeMovQueue.pop();
     }
     console.log("onKeydown", this.snakeHeadMov);
+    // console.log("snakeMovQueue", this.snakeMovQueue);
+  }
+  updateSnakeMovQueue() {
+    this.snakeMovQueue.unshift(this.snakeHeadMov);
+    this.snakeMovQueue.pop();
+    console.log("snakeMovQueue", this.snakeMovQueue);
   }
   snakeMove() {
     for (let i = 0; i < this.snakeLinks.length; i++) {
-      if (i == 0) {
-        // this.snakeLinks[0].moveLast = this.snakeLinks[0].moveNext;
-        this.snakeLinks[0].moveNext = this.snakeHeadMov;
-      } else {
-        // this.snakeLinks[i].moveLast = this.snakeLinks[i].moveNext;
-        this.snakeLinks[i].moveNext = this.snakeLinks[i - 1].moveLast;
-      }
-      // console.log("link " + i + ": ", this.snakeLinks[i]);
-      this.snakeLinkDirection(this.snakeLinks[i]);
-      // console.log("snakeMove()", this.snakeLinks[i]);
+      this.snakeLinkDirection(this.snakeMovQueue[i], this.snakeLinks[i]);
     }
   }
-  snakeLinkDirection(link: SnakeModel): void {
-    // console.log("snakeLinkDirection", link);
-    // console.log("moveNext", link.moveNext);
-    switch (link.moveNext) {
+  snakeLinkDirection(direction: string | MoveOpt, link: SnakeModel): void {
+    switch (direction) {
       case "ArrowDown":
         this.snakeLinkMove(this.modulo, 0, link);
         break;
@@ -90,7 +88,6 @@ export class StageComponent implements OnInit {
     }
   }
   snakeLinkMove(y: number, x: number, link: SnakeModel): void {
-    // console.log("snakeLinkMove", x, y, link);
     link.y += y;
     link.x += x;
     if (link.y > this.stageHeight - this.modulo) {
@@ -104,6 +101,8 @@ export class StageComponent implements OnInit {
     } else if (link.x < 0) {
       link.x = (this.stageSlots[1].length - 1) * this.modulo;
     }
+    // console.log("x:", link.x, " y:", link.y);
+    // console.log("lastX:", link.lastX, " lastY:", link.lastY);
   }
 
   findEmptySlot(): [number, number] {
@@ -144,9 +143,9 @@ export class StageComponent implements OnInit {
   checkColition() {
     let colition = false;
     let newLink = {
-      x: this.snakeLinks[this.snakeLinks.length - 1].x,
-      y: this.snakeLinks[this.snakeLinks.length - 1].x,
-      moveNext: this.snakeLinks[this.snakeLinks.length - 1].moveNext
+      x: this.snakeLinks[this.snakeLinks.length - 1].lastX,
+      y: this.snakeLinks[this.snakeLinks.length - 1].lastY
+      // moveNext: this.snakeLinks[this.snakeLinks.length - 1].moveNext
     };
     for (let i = 0; i < this.apples.length; i++) {
       if (
@@ -155,9 +154,9 @@ export class StageComponent implements OnInit {
       ) {
         console.log("colition!");
         colition = true;
-        this.snakeLinks.push(
-          new SnakeModel(newLink.x, newLink.y, newLink.moveNext)
-        );
+        let lastIndex = this.snakeMovQueue.length - 1;
+        this.snakeMovQueue.push(this.snakeMovQueue[lastIndex]);
+        this.snakeLinks.push(new SnakeModel(newLink.x, newLink.y));
         this.apples.splice(i, 1);
         this.applePush();
         break;

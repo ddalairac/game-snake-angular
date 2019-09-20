@@ -21,11 +21,11 @@ export class SnakeModel {
   constructor(
     x: number,
     y: number,
-    moveNext: MoveOpt | string,
+    // moveNext: MoveOpt | string,
     color?: string
   ) {
-    console.warn("new snake link", x, y, moveNext);
-    this.moveNext = moveNext;
+    console.warn("new snake link", x, y);
+    // this.moveNext = moveNext;
     this.x = x;
     this.y = y;
   }
@@ -36,24 +36,24 @@ export class SnakeModel {
   private _prevX: number;
   private _prevY: number;
 
-  set moveNext(value: MoveOpt | string) {
-    if (
-      value != MoveOpt.ArrowDown &&
-      value != MoveOpt.ArrowUp &&
-      value != MoveOpt.ArrowLeft &&
-      value != MoveOpt.ArrowRight
-    ) {
-      console.log("Movimiento no valido", value);
-    }
-    this._moveLast = this._moveNext;
-    this._moveNext = value;
-  }
-  get moveNext(): MoveOpt | string {
-    return this._moveNext;
-  }
-  get moveLast(): MoveOpt | string {
-    return this._moveLast;
-  }
+  // set moveNext(value: MoveOpt | string) {
+  //   if (
+  //     value != MoveOpt.ArrowDown &&
+  //     value != MoveOpt.ArrowUp &&
+  //     value != MoveOpt.ArrowLeft &&
+  //     value != MoveOpt.ArrowRight
+  //   ) {
+  //     console.log("Movimiento no valido", value);
+  //   }
+  //   this._moveLast = this._moveNext;
+  //   this._moveNext = value;
+  // }
+  // get moveNext(): MoveOpt | string {
+  //   return this._moveNext;
+  // }
+  // get moveLast(): MoveOpt | string {
+  //   return this._moveLast;
+  // }
 
   set x(value: number) {
     this._prevX = this._x;
@@ -63,7 +63,7 @@ export class SnakeModel {
     return this._x;
   }
   get lastX(): number {
-    return this._x;
+    return this._prevX;
   }
 
   set y(value: number) {
@@ -74,7 +74,7 @@ export class SnakeModel {
     return this._y;
   }
   get lastY(): number {
-    return this._y;
+    return this._prevY;
   }
 }
 // export class SnakeModel extends ElementModel {
