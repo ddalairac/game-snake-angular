@@ -1,6 +1,7 @@
 import { Component, OnInit } from "@angular/core";
-import { SnakeModel, AppleModel } from "src/app/model/skake.class";
+import { SnakeModel } from "src/app/model/skake.class";
 import { GameService } from "src/app/services/game.service";
+import { AppleModel } from "src/app/model/apple.class";
 
 @Component({
   selector: "app-stage",
@@ -16,11 +17,15 @@ export class StageComponent implements OnInit {
     this.snakeLinks = this.game.snakeLinks;
     this.apples = this.game.apples;
     this.stageSlots = this.game.stageSlots;
+    this.stageWidth = this.game.stageWidth;
+    this.module = this.game.module;
   }
 
   stageSlots: Array<number[]>;
   snakeLinks: SnakeModel[];
   apples: AppleModel[];
+  stageWidth: number;
+  module: number;
 
   onKeydown(KeyboardEvent: KeyboardEvent): void {
     this.game.newUserEvent(KeyboardEvent);

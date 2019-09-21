@@ -17,10 +17,17 @@ body {
   left: 0;
   cursor: default;
 }
-
+.container {
+  position: relative;
+  margin: 0 auto;
+}
 .stage {
   position: relative;
   margin: 0 auto;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  -moz-border-radius: 10px;
+  -webkit-border-radius: 10px;
 }
 .row {
   display: block;
@@ -39,16 +46,53 @@ body {
 .slot,
 .body-link,
 .apple {
-  width: 28px;
-  height: 28px;
-  border: 1px solid black;
+  width: 30px;
+  height: 30px;
   margin: 0;
+}
+.body-link,
+.apple {
+  position: absolute;
+  border-radius: 10px;
+  -moz-border-radius: 10px;
+  -webkit-border-radius: 10px;
+
+  .ligth {
+    width: 4px;
+    height: 19px;
+    background: #fff;
+    position: relative;
+    top: 6px;
+    left: 4px;
+
+    border-radius: 10px 0 0 10px;
+    -moz-border-radius: 10px 0 0 10px;
+    -webkit-border-radius: 10px 0 0 10px;
+  }
 }
 .body-link {
   // background: green;
-  position: absolute;
+  .ligth {
+    background: darkseagreen;
+  }
 }
 .apple {
   // background: red;
-  position: absolute;
+
+  .little-stick {
+    width: 5px;
+    height: 13px;
+    background: rgb(0, 180, 75);
+    position: relative;
+    top: -8px;
+    left: 13px;
+
+    border-radius: 10px 0 10px 0;
+    -moz-border-radius: 10px 0 10px 0;
+    -webkit-border-radius: 10px 0 10px 0;
+  }
+  .ligth {
+    background: orangered;
+    top: -8px;
+  }
 }

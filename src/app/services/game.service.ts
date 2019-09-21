@@ -1,6 +1,7 @@
 import { Injectable } from "@angular/core";
-import { SnakeModel, AppleModel } from "../model/skake.class";
+import { SnakeModel } from "../model/skake.class";
 import { MoveOpt } from "../model/move-options.enum";
+import { AppleModel } from "../model/apple.class";
 
 @Injectable({
   providedIn: "root"
@@ -12,28 +13,35 @@ export class GameService {
   public snakeLinks: SnakeModel[] = [];
   public apples: AppleModel[] = [];
 
-  private snakeMovQueue: Array<string | MoveOpt> = [];
-  private modulo: number;
-  private stageHeight: number;
-  private stageWidth: number;
-  private snakeHeadMov: string | MoveOpt;
-  private appleApearIteration: number;
-  private interval;
-  private i: number = 0;
+  private _module: number;
+  private _stageHeight: number;
+  private _snakeMovQueue: Array<string | MoveOpt> = [];
+  private _stageWidth: number;
+  private _snakeHeadMov: string | MoveOpt;
+  private _appleApearIteration: number;
+  private _interval;
+  private _i: number = 0;
+
+  public get module(): number {
+    return this._module;
+  }
+  public get stageWidth() {
+    return this._stageWidth;
+  }
 
   public createStage() {
     this.stageSlots = [
       [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
       [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
     ];
-    this.modulo = 30;
-    this.stageHeight = this.stageSlots[0].length * this.modulo;
-    this.stageWidth = this.stageSlots[1].length * this.modulo;
-    this.appleApearIteration = 10;
+    this._module = 30;
+    this._stageHeight = this.stageSlots[0].length * this._module;
+    this._stageWidth = this.stageSlots[1].length * this._module;
+    this._appleApearIteration = 10;
   }
   public starGame() {
-    this.snakeHeadMov = MoveOpt.ArrowRight;
-    this.snakeMovQueue.push(MoveOpt.ArrowRight);
+    this._snakeHeadMov = MoveOpt.ArrowRight;
+    this._snakeMovQueue.push(MoveOpt.ArrowRight);
 
     this.snakeLinks.push(new SnakeModel(0, 0));
     this.loop();
@@ -47,37 +55,37 @@ export class GameService {
       KeyboardEvent.key == MoveOpt.ArrowRight
     ) {
       if (
-        (this.snakeHeadMov == MoveOpt.ArrowRight &&
+        (this._snakeHeadMov == MoveOpt.ArrowRight &&
           KeyboardEvent.key != MoveOpt.ArrowLeft) ||
-        (this.snakeHeadMov == MoveOpt.ArrowLeft &&
+        (this._snakeHeadMov == MoveOpt.ArrowLeft &&
           KeyboardEvent.key != MoveOpt.ArrowRight) ||
-        (this.snakeHeadMov == MoveOpt.ArrowDown &&
+        (this._snakeHeadMov == MoveOpt.ArrowDown &&
           KeyboardEvent.key != MoveOpt.ArrowUp) ||
-        (this.snakeHeadMov == MoveOpt.ArrowUp &&
+        (this._snakeHeadMov == MoveOpt.ArrowUp &&
           KeyboardEvent.key != MoveOpt.ArrowDown)
       ) {
-        this.snakeHeadMov = KeyboardEvent.key;
+        this._snakeHeadMov = KeyboardEvent.key;
       }
     }
   }
   private loop() {
-    let nextApplepush = this.appleApearIteration;
-    this.interval = setInterval(() => {
+    let nextApplepush = this._appleApearIteration;
+    this._interval = setInterval(() => {
       this.eatApple();
       this.eatItself();
-      this.updateSnakeMovQueue();
+      this.update_SnakeMovQueue();
       this.snakeMove();
-      this.i++;
+      this._i++;
     }, 100);
   }
-  private updateSnakeMovQueue() {
-    this.snakeMovQueue.unshift(this.snakeHeadMov);
-    this.snakeMovQueue.pop();
-    // console.log(this.snakeMovQueue);
+  private update_SnakeMovQueue() {
+    this._snakeMovQueue.unshift(this._snakeHeadMov);
+    this._snakeMovQueue.pop();
+    // console.log(this._snakeMovQueue);
   }
   private snakeMove() {
     for (let i = 0; i < this.snakeLinks.length; i++) {
-      this.snakeLinkDirection(this.snakeMovQueue[i], this.snakeLinks[i]);
+      this.snakeLinkDirection(this._snakeMovQueue[i], this.snakeLinks[i]);
     }
   }
   private snakeLinkDirection(
@@ -86,32 +94,32 @@ export class GameService {
   ): void {
     switch (direction) {
       case "ArrowDown":
-        this.snakeLinkMove(this.modulo, 0, link);
+        this.snakeLinkMove(this._module, 0, link);
         break;
       case "ArrowUp":
-        this.snakeLinkMove(-this.modulo, 0, link);
+        this.snakeLinkMove(-this._module, 0, link);
         break;
       case "ArrowRight":
-        this.snakeLinkMove(0, this.modulo, link);
+        this.snakeLinkMove(0, this._module, link);
         break;
       case "ArrowLeft":
-        this.snakeLinkMove(0, -this.modulo, link);
+        this.snakeLinkMove(0, -this._module, link);
         break;
     }
   }
   private snakeLinkMove(y: number, x: number, link: SnakeModel): void {
     link.y += y;
     link.x += x;
-    if (link.y > this.stageHeight - this.modulo) {
+    if (link.y > this._stageHeight - this._module) {
       link.y = 0;
     } else if (link.y < 0) {
-      link.y = (this.stageSlots[1].length - 1) * this.modulo;
+      link.y = (this.stageSlots[1].length - 1) * this._module;
     }
 
-    if (link.x > this.stageWidth - this.modulo) {
+    if (link.x > this._stageWidth - this._module) {
       link.x = 0;
     } else if (link.x < 0) {
-      link.x = (this.stageSlots[1].length - 1) * this.modulo;
+      link.x = (this.stageSlots[1].length - 1) * this._module;
     }
   }
   private findEmptySlot(): [number, number] {
@@ -122,10 +130,10 @@ export class GameService {
     while (!empty) {
       x =
         (Math.floor(Math.random() * this.stageSlots[1].length) + 0) *
-        this.modulo;
+        this._module;
       y =
         (Math.floor(Math.random() * this.stageSlots[0].length) + 0) *
-        this.modulo;
+        this._module;
       for (let i = 0; i < this.snakeLinks.length; i++) {
         if (this.snakeLinks[i].x == x && this.snakeLinks[i].y == y) {
           break;
@@ -155,8 +163,8 @@ export class GameService {
       ) {
         // console.log("colition!");
         colition = true;
-        let lastIndex = this.snakeMovQueue.length - 1;
-        this.snakeMovQueue.push(this.snakeMovQueue[lastIndex]);
+        let lastIndex = this._snakeMovQueue.length - 1;
+        this._snakeMovQueue.push(this._snakeMovQueue[lastIndex]);
         this.snakeLinks.push(new SnakeModel(newLink.x, newLink.y));
         this.apples[i].color = "yellow";
         this.apples.splice(i, 1);
@@ -181,9 +189,9 @@ export class GameService {
     }
     if (dead) {
       for (let link of this.snakeLinks) {
-        link.color = "yellow";
+        link.color = "red";
       }
-      clearInterval(this.interval);
+      clearInterval(this._interval);
 
       alert("GAME OVER!");
     }

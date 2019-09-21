@@ -1,5 +1,5 @@
 import { Component, OnInit, Input } from "@angular/core";
-import { AppleModel } from "src/app/model/skake.class";
+import { AppleModel } from "src/app/model/apple.class";
 
 @Component({
   selector: "app-apple",
@@ -11,4 +11,5 @@ export class AppleComponent implements OnInit {
 
   ngOnInit() {}
   @Input() apple: AppleModel;
+  @Input() module: number;
 }

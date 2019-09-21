@@ -1,15 +1,13 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from "@angular/core";
 
 @Component({
-  selector: 'app-stage-slot',
-  templateUrl: './stage-slot.component.html',
-  styleUrls: ['./stage-slot.component.scss']
+  selector: "app-stage-slot",
+  templateUrl: "./stage-slot.component.html",
+  styleUrls: ["./stage-slot.component.scss"]
 })
 export class StageSlotComponent implements OnInit {
+  constructor() {}
 
-  constructor() { }
-
-  ngOnInit() {
-  }
-
+  ngOnInit() {}
+  @Input() module: number;
 }
