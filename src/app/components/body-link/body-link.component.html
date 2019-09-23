@@ -9,4 +9,17 @@
   }"
 >
   <div class="ligth"></div>
+  <div
+    class="face"
+    *ngIf="index == 0"
+    [ngStyle]="{
+      transform: 'rotate(' + link.headAngle + 'deg)'
+    }"
+  >
+    <div class="antenna"></div>
+    <div class="antenna antenna-2"></div>
+    <div class="eyes eyes-2"><div class="pupil"></div></div>
+    <div class="eyes"><div class="pupil"></div></div>
+    <div class="mouth"><div class="no-tongue "></div></div>
+  </div>
 </div>

@@ -42,7 +42,9 @@ export class GameService {
   public starGame() {
     this._snakeHeadMov = MoveOpt.ArrowRight;
     this._snakeMovQueue.push(MoveOpt.ArrowRight);
-
+    // this.snakeLinks.push(new SnakeModel(90, 0)); //! borrar
+    // this.snakeLinks.push(new SnakeModel(60, 0)); //! borrar
+    // this.snakeLinks.push(new SnakeModel(30, 0)); //! borrar
     this.snakeLinks.push(new SnakeModel(0, 0));
     this.loop();
     this.applePush();
@@ -81,7 +83,6 @@ export class GameService {
   private update_SnakeMovQueue() {
     this._snakeMovQueue.unshift(this._snakeHeadMov);
     this._snakeMovQueue.pop();
-    // console.log(this._snakeMovQueue);
   }
   private snakeMove() {
     for (let i = 0; i < this.snakeLinks.length; i++) {
@@ -92,18 +93,24 @@ export class GameService {
     direction: string | MoveOpt,
     link: SnakeModel
   ): void {
+    this.snakeLinks[0].headAngle = 15;
+    this.snakeLinks[0].headFlip = false;
     switch (direction) {
       case "ArrowDown":
         this.snakeLinkMove(this._module, 0, link);
+        this.snakeLinks[0].headAngle += 45;
         break;
       case "ArrowUp":
         this.snakeLinkMove(-this._module, 0, link);
+        this.snakeLinks[0].headAngle += 270;
         break;
       case "ArrowRight":
         this.snakeLinkMove(0, this._module, link);
         break;
       case "ArrowLeft":
         this.snakeLinkMove(0, -this._module, link);
+        this.snakeLinks[0].headAngle += 90;
+        this.snakeLinks[0].headFlip = true;
         break;
     }
   }

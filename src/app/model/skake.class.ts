@@ -13,11 +13,14 @@ export class SnakeModel {
       this.color = "green";
     }
   }
+  public color: string;
+  public headAngle: number;
+  public headFlip: boolean;
+
   private _x: number;
   private _y: number;
   private _prevX: number;
   private _prevY: number;
-  color: string;
 
   set x(value: number) {
     this._prevX = this._x;

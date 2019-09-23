@@ -6,21 +6,22 @@
 <div class="stage" [ngStyle]="{ width: stageWidth + 'px' }">
   <div class="row" *ngFor="let h of stageSlots[0]; let hIndex = index">
     <app-stage-slot
+      *ngFor="let w of stageSlots[1]; let wIndex = index"
       class="col"
       [module]="module"
-      *ngFor="let w of stageSlots[1]; let wIndex = index"
     ></app-stage-slot>
   </div>
 
   <app-body-link
+    *ngFor="let link of snakeLinks; let index = index"
     [module]="module"
     [link]="link"
-    *ngFor="let link of snakeLinks"
+    [index]="index"
   ></app-body-link>
 
   <app-apple
+    *ngFor="let apple of apples"
     [module]="module"
     [apple]="apple"
-    *ngFor="let apple of apples"
   ></app-apple>
 </div>
