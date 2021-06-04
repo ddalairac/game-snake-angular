@@ -1,4 +1,4 @@
-# game-snake
+# Game Snake
 Snake game in Angular
 
 ### Demo
